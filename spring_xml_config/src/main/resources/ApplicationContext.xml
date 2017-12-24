@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="t1000"
+          class="ru.enovikow.robot.ModelT1000">
+        <constructor-arg ref="sonyHand"/>
+        <constructor-arg ref="sonyHead"/>
+        <constructor-arg ref="toshibaLeg"/>
+
+        <property name="head" ref="toshibaHead"/>
+        <property name="hand" ref="toshibaHand"/>
+    </bean>
+
+    <bean id="sonyHead" class="ru.enovikow.robot.model.sony.SonyHeadImpl"/>
+    <bean id="sonyHand" class="ru.enovikow.robot.model.sony.SonyHandImpl"/>
+    <bean id="sonyLeg" class="ru.enovikow.robot.model.sony.SonyLegImpl"/>
+
+    <bean id="toshibaHead" class="ru.enovikow.robot.model.toshiba.ToshibaHeadImpl"/>
+    <bean id="toshibaHand" class="ru.enovikow.robot.model.toshiba.ToshibaHandImpl"/>
+    <bean id="toshibaLeg" class="ru.enovikow.robot.model.toshiba.ToshibaLegImpl"/>
+
+</beans>
