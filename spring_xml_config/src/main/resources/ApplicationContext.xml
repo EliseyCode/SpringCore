@@ -1,24 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="false">
 
-    <bean id="t1000"
-          class="ru.enovikow.robot.ModelT1000">
-        <constructor-arg ref="sonyHand"/>
-        <constructor-arg ref="sonyHead"/>
-        <constructor-arg ref="toshibaLeg"/>
+    <import resource="robot_context.xml"/>
 
-        <property name="head" ref="toshibaHead"/>
-        <property name="hand" ref="toshibaHand"/>
+    <bean class="ru.enovikow.MyBeanPostProcessor"/>
+
+    <bean id="t1000Conveyor" class="ru.enovikow.robot.model.impl.conveyor.T1000Conveyor">
+        <lookup-method name="createRobot" bean="t1000"/>
     </bean>
 
-    <bean id="sonyHead" class="ru.enovikow.robot.model.sony.SonyHeadImpl"/>
-    <bean id="sonyHand" class="ru.enovikow.robot.model.sony.SonyHandImpl"/>
-    <bean id="sonyLeg" class="ru.enovikow.robot.model.sony.SonyLegImpl"/>
+    <bean id="t1000Pool" class="ru.enovikow.robot.model.impl.pool.RobotPoolImpl">
+        <property name="robotCollection">
+            <list>
+                <ref bean="t1000"/>
+                <bean class="ru.enovikow.robot.model.impl.robot.ModelT1000" parent="baseModel" scope="prototype">
+                    <constructor-arg value="gold" index="3" type="java.lang.String"/>
+                    <constructor-arg value="2016" index="4" type="int"/>
+                    <constructor-arg value="false" index="5" type="boolean"/>
+                </bean>
+            </list>
+        </property>
 
-    <bean id="toshibaHead" class="ru.enovikow.robot.model.toshiba.ToshibaHeadImpl"/>
-    <bean id="toshibaHand" class="ru.enovikow.robot.model.toshiba.ToshibaHandImpl"/>
-    <bean id="toshibaLeg" class="ru.enovikow.robot.model.toshiba.ToshibaLegImpl"/>
+        <constructor-arg name="robotMap">
+            <map>
+                <entry key="2000" value-ref="t1000"/>
+                <entry key="2001" value-ref="t1000"/>
+                <entry key="2002">
+                    <bean class="ru.enovikow.robot.model.impl.robot.ModelT1000" parent="baseModel">
+                        <constructor-arg value="gold" index="3"/>
+                        <constructor-arg value="2002" index="4"/>
+                        <constructor-arg value="false" index="5"/>
+                    </bean>
+                </entry>
+
+            </map>
+        </constructor-arg>
+    </bean>
 
 </beans>

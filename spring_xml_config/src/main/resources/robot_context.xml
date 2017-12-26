@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       default-lazy-init="true">
+
+    <import resource="sony_context.xml"/>
+    <import resource="toshiba_context.xml"/>
+
+    <bean id="t1000" class="ru.enovikow.robot.model.impl.robot.ModelT1000" parent="baseModel" scope="prototype">
+        <property name="color" value="red"/>
+        <property name="year" value="2016"/>
+        <property name="soundEnabled" value="true"/>
+
+        <property name="leg" ref="toshibaLeg"/>
+    </bean>
+
+    <bean id="baseModel" abstract="true">
+        <constructor-arg ref="toshibaHead"/>
+        <constructor-arg ref="sonyHand"/>
+        <constructor-arg ref="sonyLeg"/>
+    </bean>
+
+    <bean id="t1000Property" class="ru.enovikow.robot.model.impl.robot.ModelT1000" parent="baseModel" scope="prototype"
+          p:color="Blue"
+          p:year="1990"
+          p:soundEnabled="false"/>
+
+    <bean id="t1000Constructor" class="ru.enovikow.robot.model.impl.robot.ModelT1000" scope="prototype"
+          c:head-ref="toshibaHead"
+          c:hand-ref="sonyHand"
+          c:leg-ref="toshibaLeg"
+          c:color="Pink"
+          c:year="1995"
+          c:hasSound="true"/>
+</beans>
